@@ -111,4 +111,5 @@ struct HomeView: View {
 
 #Preview {
     HomeView()
+        .modelContainer(for: [SDBillSplitRecord.self, SDParticipantShare.self, SDAssignedItemEntry.self], inMemory: true) // Use inMemory for previews
 }

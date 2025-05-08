@@ -12,7 +12,7 @@ import SwiftData
 struct SplitBillApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            SDBillSplitRecord.self, SDParticipantShare.self, SDAssignedItemEntry.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

@@ -1,0 +1,7 @@
+//
+//  Release.xcconfig
+//  SplitBill
+//
+//  Created by Reza Juliandri on 09/05/25.
+//
+OPEN_AI_API_KEY = sk-

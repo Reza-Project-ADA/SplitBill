@@ -9,4 +9,6 @@
 struct ReceiptStore: Codable {
     let name: String
     let address: String
+    let branch: String?
+    let phone: String?
 }

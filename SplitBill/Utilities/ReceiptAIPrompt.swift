@@ -10,7 +10,7 @@ struct ReceiptAIPrompt {
     static func createReceiptExtractionSystemPrompt() -> String {
         // Get an example JSON string from our Codable structs
         // This helps the AI understand the exact desired structure.
-        let exampleStore = ReceiptStore(name: "EXAMPLE STORE NAME", address: "123 Example St, City")
+        let exampleStore = ReceiptStore(name: "EXAMPLE STORE NAME", address: "123 Example St, City", branch: "Manado", phone: "08123456789")
         let exampleItem = ReceiptItem(name: "EXAMPLE ITEM", quantity: 1, price: 10000)
         let examplePayment = ReceiptPayment(cash: 50000, change: 5000, status: "Lunas")
         let exampleTransaction = ReceiptTransaction(date: "YYYY-MM-DD",
@@ -20,6 +20,9 @@ struct ReceiptAIPrompt {
                                                     items: [exampleItem],
                                                     subtotal: 10000,
                                                     tax: 1000,
+                                                    service_fee: 0,
+                                                    delivery_fee: 0,
+                                                    other_fee: 0,
                                                     total: 11000,
                                                     payment: examplePayment)
         let exampleOutput = ReceiptOutput(store: exampleStore, transaction: exampleTransaction)

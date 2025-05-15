@@ -11,10 +11,11 @@ import SwiftData
 @main
 struct SplitBillApp: App {
     var sharedModelContainer: ModelContainer = {
+        let isPreview = ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
         let schema = Schema([
             SDBillSplitRecord.self, SDParticipantShare.self, SDAssignedItemEntry.self
         ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: isPreview)
 
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])

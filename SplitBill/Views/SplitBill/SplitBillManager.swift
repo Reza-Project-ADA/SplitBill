@@ -308,7 +308,7 @@ class SplitBillManager: ObservableObject {
         // Link back-references (SwiftData @Model macro might handle some of this, but explicit is safer)
         for share in sdParticipantShares {
             share.billSplitRecord = sdBillRecord
-            for entry in share.itemEntries ?? [] {
+            for entry in share.itemEntries {
                 entry.participantShare = share
             }
         }
@@ -316,12 +316,12 @@ class SplitBillManager: ObservableObject {
         modelContext.insert(sdBillRecord)
         
         // SwiftData typically auto-saves, but explicit save can be done if needed:
-        // do {
-        //     try modelContext.save()
-        //     print("Bill split saved successfully!")
-        // } catch {
-        //     print("Failed to save bill split: \(error)")
-        // }
+         do {
+             try modelContext.save()
+             print("Bill split saved successfully!")
+         } catch {
+             print("Failed to save bill split: \(error)")
+         }
         print("Bill split prepared for SwiftData insertion.")
     }
     

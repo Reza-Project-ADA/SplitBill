@@ -16,7 +16,7 @@ struct SavedSplitDetailView: View {
         List {
             Section {
                 HStack { Text("Store:"); Spacer(); Text(splitRecord.storeName) }
-                HStack { Text("Order #:"); Spacer(); Text("\(splitRecord.receiptOrderNumber)") }
+                HStack { Text("Order:"); Spacer(); Text("#\(splitRecord.receiptOrderNumber)") }
                 HStack { Text("Date:"); Spacer(); Text(splitRecord.receiptDateTime.dayMonthFormat) }
                 HStack { Text("Original Subtotal:"); Spacer(); Text(splitRecord.receiptOriginalSubtotal.currency) }
                 HStack { Text("Original Tax:"); Spacer(); Text(splitRecord.receiptOriginalTax.currency) }
@@ -26,12 +26,12 @@ struct SavedSplitDetailView: View {
                 Text("Receipt Details")
             }
 
-            if let shares = splitRecord.participantShares, !shares.isEmpty {
+            if !splitRecord.participantShares.isEmpty {
                 Section("Participant Shares") {
-                    ForEach(shares.sorted(by: { $0.participantName < $1.participantName })) { share in
+                    ForEach(splitRecord.participantShares.sorted(by: { $0.participantName < $1.participantName })) { share in
                         DisclosureGroup {
-                            if let items = share.itemEntries, !items.isEmpty {
-                                ForEach(items.sorted(by: { $0.itemName < $1.itemName })) { itemEntry in
+                            if !share.itemEntries.isEmpty {
+                                ForEach(share.itemEntries.sorted(by: { $0.itemName < $1.itemName })) { itemEntry in
                                     VStack(alignment: .leading, spacing: 2) {
                                         HStack {
                                             Text(itemEntry.itemName)

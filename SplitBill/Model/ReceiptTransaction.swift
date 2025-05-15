@@ -12,17 +12,19 @@ struct ReceiptTransaction: Codable {
     let date: String // Format "YYYY-MM-DD"
     let time: String // Format "HH:MM"
     let cashier: String
-    let order_number: String // Changed from orderNumber for JSON convention
+    let order_number: String
     let items: [ReceiptItem]
     let subtotal: Int
     let tax: Int
+    let service_fee: Int
+    let delivery_fee: Int
+    let other_fee: Int
     let total: Int
     let payment: ReceiptPayment
 
-    // For JSON keys to match the example (e.g., order_number)
     enum CodingKeys: String, CodingKey {
         case date, time, cashier
-        case order_number = "order_number" // Map Swift orderNumber to JSON order_number
-        case items, subtotal, tax, total, payment
+        case order_number = "order_number"
+        case items, subtotal, tax, service_fee, delivery_fee, other_fee, total, payment
     }
 }

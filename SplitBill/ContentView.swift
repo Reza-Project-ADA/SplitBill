@@ -20,6 +20,7 @@ struct ContentView: View {
                     Text("Home")
                 }
         }
+        .tint(Color.primary)
     }
 }
 

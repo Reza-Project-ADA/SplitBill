@@ -11,15 +11,16 @@ import SwiftData
 
 @Model
 final class SDParticipantShare {
-    @Attribute(.unique) var id: UUID
+    var id: UUID
     var participantName: String
     var calculatedSubtotal: Double // Sum of their item portions
     var calculatedTaxShare: Double
     var calculatedTotalOwed: Double
 
     @Relationship
-    var itemEntries: [SDAssignedItemEntry]? = []
+    var itemEntries: [SDAssignedItemEntry] = []
 
+    @Relationship(inverse: \SDBillSplitRecord.participantShares)
     var billSplitRecord: SDBillSplitRecord? // Inverse relationship
 
     init(id: UUID = UUID(),

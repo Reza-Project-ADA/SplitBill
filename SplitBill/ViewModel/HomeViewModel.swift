@@ -1,0 +1,20 @@
+//
+//  HomeViewModel.swift
+//  SplitBill
+//
+//  Created by Reza Juliandri on 14/05/25.
+//
+
+
+import SwiftUI
+import SwiftData
+
+class HomeViewModel: ObservableObject { // Renamed for clarity, standard practice
+    @Published var path: [MainScreen] = []
+    @Published var receiptOutput: ReceiptOutput?
+    @Published var selectedSplitSDRecord: SDBillSplitRecord?
+    
+    @Published var cardBackgroundColor = Color(.systemGray6) // Adaptable for light/dark mode
+    @Published var cardCornerRadius: CGFloat = 12
+    @Published var cardShadowRadius: CGFloat = 5
+}

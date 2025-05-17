@@ -34,7 +34,7 @@ struct HomeView: View {
                         HStack(spacing: 4) {
                             Image(systemName: "dollarsign.circle.fill")
                                 .foregroundColor(.yellow)
-                            Text("20")
+                            Text("\(viewModel.totalCredits)")
                                 .fontWeight(.semibold)
                                 .foregroundColor(.yellow)
                         }

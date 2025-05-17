@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F5C4002D2DD76D0A00C4B375 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = F5C4002C2DD76D0A00C4B375 /* FirebaseAnalytics */; };
+		F5C400342DD8FBEB00C4B375 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = F5C400332DD8FBEB00C4B375 /* FirebaseRemoteConfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F5C4002D2DD76D0A00C4B375 /* FirebaseAnalytics in Frameworks */,
+				F5C400342DD8FBEB00C4B375 /* FirebaseRemoteConfig in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +133,7 @@
 			name = SplitBill;
 			packageProductDependencies = (
 				F5C4002C2DD76D0A00C4B375 /* FirebaseAnalytics */,
+				F5C400332DD8FBEB00C4B375 /* FirebaseRemoteConfig */,
 			);
 			productName = SplitBill;
 			productReference = F50810DD2DCD0FD6005C1D49 /* SplitBill.app */;
@@ -611,6 +614,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F5C4002B2DD76D0A00C4B375 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
+		};
+		F5C400332DD8FBEB00C4B375 /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F5C4002B2DD76D0A00C4B375 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

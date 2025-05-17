@@ -3,14 +3,14 @@ import SwiftUI
 
 struct AddBillView: View {
     @Environment(\.dismiss) var dismiss // For dismissing this view if needed later
-    
+
     @StateObject var viewModel: AddBillViewModel = AddBillViewModel()
     // For showing alerts
     @State private var showAlert = false
     @State private var alertMessage = ""
-    
+
     @Binding var receipt: ReceiptOutput?
-    
+
     var body: some View {
         VStack(spacing: 20) {
             Button {
@@ -30,13 +30,13 @@ struct AddBillView: View {
                             Text("Tap to replace")
                                 .font(.caption)
                                 .foregroundColor(.white)
-                            
+
                         }
                         .padding(.vertical, 8)
                         .padding(.horizontal, 10)
                         .background(Color.black.opacity(0.6))
                         .cornerRadius(5)
-                        
+
                     }
                 } else {
                     VStack {
@@ -54,19 +54,19 @@ struct AddBillView: View {
                             .font(.caption)
                             .foregroundColor(.gray)
                     }
-                    
+
                 }
             }
             .buttonStyle(PlainButtonStyle())
-            
+
             // TODO: Add other fields like amount, date, participants, etc.
             // For example:
             // TextField("Bill Amount", text: .constant(""))
             //     .textFieldStyle(RoundedBorderTextFieldStyle())
-            
+
             Spacer()
-            
-            Button("Save Bill") {
+
+            Button {
                 // Clear previous errors before attempting
                 viewModel.errorMessage = ""
                 Task {
@@ -85,14 +85,20 @@ struct AddBillView: View {
                         print("Save Bill failed. Error: \(viewModel.errorMessage)")
                     }
                 }
+            } label: {
+                if(viewModel.isLoading) {
+                    Text("Loading...")
+                } else {
+                    Text("Scan Receipt")
+                }
             }
             .padding()
             .frame(maxWidth: .infinity)
-            .background(viewModel.billImage == nil ? Color.gray : Color.green) // Disable if no image
+            .background(viewModel.billImage == nil || viewModel.isLoading ? Color.gray : Color.green) // Gray if no image or loading
             .foregroundColor(.white)
             .cornerRadius(10)
-            .disabled(viewModel.billImage == nil) // Disable if no image
-            
+            .disabled(viewModel.billImage == nil || viewModel.isLoading) // Disable if no image or loading
+
         }
         .padding()
         .navigationTitle("New Bill")

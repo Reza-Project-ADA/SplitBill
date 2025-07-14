@@ -15,8 +15,20 @@ struct ContentView: View {
         TabView {
             HomeView()
                 .tabItem {
-                    Image(systemName: "house")
-                    Text("Home")
+                    Image(systemName: "receipt")
+                    Text("Split Receipt")
+                }
+            
+            SplitSessionView()
+                .tabItem {
+                    Image(systemName: "arrow.left.arrow.right")
+                    Text("Split Session")
+                }
+            
+            FriendsView()
+                .tabItem {
+                    Image(systemName: "person.3.fill")
+                    Text("Friends")
                 }
         }
         .tint(Color.primary)

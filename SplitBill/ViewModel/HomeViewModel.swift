@@ -29,5 +29,36 @@ class HomeViewModel: ObservableObject { // Renamed for clarity, standard practic
         self.freeCredits = receiptRepository.getFreeCredits()
         self.paidCredits = receiptRepository.getPaidCredits()
         self.totalCredits = self.freeCredits + self.paidCredits
+        
+        // Listen for balance updates
+        NotificationCenter.default.addObserver(
+            forName: .balanceDidUpdate,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.loadBalanceFromRepository()
+        }
+    }
+    
+    @MainActor
+    func refreshBalance() async {
+        do {
+            let result = try await receiptRepository.getBalance()
+            self.freeCredits = result.freeCredits
+            self.paidCredits = result.paidCredits
+            self.totalCredits = self.freeCredits + self.paidCredits
+            receiptRepository.saveCredits(freeCredits: result.freeCredits, paidCredits: result.paidCredits)
+            
+            // Notify other ViewModels about balance update
+            NotificationCenter.default.post(name: .balanceDidUpdate, object: nil)
+        } catch {
+            print("Failed to refresh balance: \(error)")
+        }
+    }
+    
+    private func loadBalanceFromRepository() {
+        self.freeCredits = receiptRepository.getFreeCredits()
+        self.paidCredits = receiptRepository.getPaidCredits()
+        self.totalCredits = self.freeCredits + self.paidCredits
     }
 }

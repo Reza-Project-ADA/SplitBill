@@ -74,6 +74,9 @@ class AddBillViewModel: ObservableObject {
             // Update the repository with the latest credit information
             repository.saveCredits(freeCredits: result.freeCredits, paidCredits: result.paidCredits)
 
+            // Notify other ViewModels about balance update
+            NotificationCenter.default.post(name: .balanceDidUpdate, object: nil)
+
             print("✅ Successfully received and decoded API response. ReceiptData is set.")
 
             return true // SUCCESS!

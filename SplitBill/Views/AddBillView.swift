@@ -23,20 +23,34 @@ struct AddBillView: View {
                             .scaledToFit()
                             .frame(maxHeight: 500)
                             .cornerRadius(10)
-                        HStack {
-                            Image(systemName: "arrow.triangle.2.circlepath.camera.fill")
-                                .foregroundColor(.white)
-                                .padding(5)
-                            Text("Tap to replace")
-                                .font(.caption)
-                                .foregroundColor(.white)
+                            .opacity(viewModel.isLoading ? 0.5 : 1.0)
+                        
+                        if viewModel.isLoading {
+                            // Progress circle overlay
+                            ZStack {
+                                Circle()
+                                    .fill(Color.black.opacity(0.6))
+                                    .frame(width: 80, height: 80)
+                                
+                                ProgressView()
+                                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                    .scaleEffect(1.5)
+                            }
+                        } else {
+                            HStack {
+                                Image(systemName: "arrow.triangle.2.circlepath.camera.fill")
+                                    .foregroundColor(.white)
+                                    .padding(5)
+                                Text("Tap to replace")
+                                    .font(.caption)
+                                    .foregroundColor(.white)
 
+                            }
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 10)
+                            .background(Color.black.opacity(0.6))
+                            .cornerRadius(5)
                         }
-                        .padding(.vertical, 8)
-                        .padding(.horizontal, 10)
-                        .background(Color.black.opacity(0.6))
-                        .cornerRadius(5)
-
                     }
                 } else {
                     VStack {

@@ -23,6 +23,10 @@ protocol ReceiptRepository {
     /// - Returns: The number of paid credits
     func getPaidCredits() -> Int
     
+    /// Get the current balance
+    /// - Returns: the remaining credits
+    func getBalance() async throws -> (freeCredits: Int, paidCredits: Int)
+    
     /// Save the updated credit information
     /// - Parameters:
     ///   - freeCredits: The number of free credits

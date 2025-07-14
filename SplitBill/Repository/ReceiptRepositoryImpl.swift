@@ -10,6 +10,7 @@ import UIKit
 
 /// Implementation of the ReceiptRepository protocol
 class ReceiptRepositoryImpl: ReceiptRepository {
+    
     // MARK: - Properties
     
     /// API client for making network requests
@@ -54,6 +55,11 @@ class ReceiptRepositoryImpl: ReceiptRepository {
         saveCredits(freeCredits: result.freeCredits, paidCredits: result.paidCredits)
         
         return result
+    }
+    func getBalance() async throws -> (freeCredits: Int, paidCredits: Int) {
+        let result = try await apiClient.getBalance()
+        
+        return (freeCredits: result.freeCredits, paidCredits: result.paidCredits)
     }
     
     /// Get the current number of free credits

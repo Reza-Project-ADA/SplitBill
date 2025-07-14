@@ -11,6 +11,8 @@ extension HomeView {
     func navigationDestination(for screen: MainScreen) -> some View {
         // Navigation destinations remain the same
         switch screen {
+        case .balance:
+            BalanceView()
         case .addBill:
             AddBillView(receipt: $viewModel.receiptOutput)
                 .onDisappear {

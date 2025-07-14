@@ -6,6 +6,7 @@ enum MainScreen {
     case addBill
     case splitBill
     case splitDetail
+    case balance
 }
 
 // ViewModel remains the same
@@ -30,6 +31,7 @@ struct HomeView: View {
                     Button {
                         print(UIDevice.current.identifierForVendor?.uuidString ?? "Unknown")
                         // Action
+                        viewModel.path.append(.balance)
                     } label: {
                         HStack(spacing: 4) {
                             Image(systemName: "dollarsign.circle.fill")
@@ -53,6 +55,11 @@ struct HomeView: View {
             .navigationDestination(for: MainScreen.self, destination: navigationDestination)
             .navigationBarTitle("Split History") // More descriptive title
             .background(Color(.systemGroupedBackground).ignoresSafeArea()) // A subtle background for the whole view
+            .onAppear {
+                Task {
+                    await viewModel.refreshBalance()
+                }
+            }
         }
     }
 }

@@ -21,7 +21,8 @@ class KeyManager {
 
         // Set default values
         remoteConfig.setDefaults([
-            "api_base_url": "https://split-bill.example.com" as NSObject
+            "api_base_url": "https://splitbill.laravel.cloud" as NSObject,
+            "api_debug_base_url": "https://splitbill.laravel.cloud" as NSObject
         ])
 
         // Fetch and activate remote config values
@@ -42,14 +43,22 @@ class KeyManager {
     }
 
     var apiBaseURL: URL {
-        // Get the base URL from Remote Config
-        let urlString = remoteConfig.configValue(forKey: "api_base_url").stringValue
+        // Get the base URL from Remote Config based on build configuration
+        #if DEBUG
+            let configKey = "api_debug_base_url"
+            let defaultURL = "https://dev.split-bill.example.com"
+        #else
+            let configKey = "api_base_url"
+            let defaultURL = "https://split-bill.example.com"
+        #endif
+
+        let urlString = remoteConfig.configValue(forKey: configKey).stringValue
 
         // Fallback to default URL if the string is empty or invalid
         if let url = URL(string: urlString) {
             return url
         }
 
-        return URL(string: "https://split-bill.example.com")!
+        return URL(string: defaultURL)!
     }
 }

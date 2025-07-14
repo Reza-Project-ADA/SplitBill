@@ -18,25 +18,16 @@ struct SplitSessionFormView: View {
     
     var body: some View {
         NavigationView {
-            ZStack {
-                // Background Image - consistent with HomeView
-                background
-                
-                ScrollView {
-                    VStack(spacing: 20) {
-                        sessionSetupSection
-                        expensesSection
-                        participantsSection
-                        paymentDetailsSection
-                        calculationSection
-                        actionsSection
-                    }
-                    .padding()
-                }
+            List {
+                sessionSetupSection
+                expensesSection
+                participantsSection
+                paymentDetailsSection
+                calculationSection
+                actionsSection
             }
             .navigationTitle("New Split Session")
             .navigationBarTitleDisplayMode(.inline)
-            .background(Color(.systemGroupedBackground).ignoresSafeArea())
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
@@ -63,30 +54,12 @@ struct SplitSessionFormView: View {
         }
     }
     
-    var background: some View {
-        VStack {
-            Spacer()
-            Image("bottom-screen")
-                .resizable()
-                .scaledToFit()
-                .frame(maxWidth: .infinity)
-                .opacity(0.8)
-        }
-        .ignoresSafeArea()
-        .zIndex(-1)
-    }
     
     private var sessionSetupSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Session Setup")
-                .font(.headline)
-                .fontWeight(.semibold)
-            
+        Section("Session Setup") {
             TextField("Session Title (e.g., Badminton Night)", text: $viewModel.sessionTitle)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
             
             TextField("Category (optional)", text: $viewModel.sessionCategory)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
             
             Toggle("Use custom date & time", isOn: $viewModel.useCustomDate)
             
@@ -95,39 +68,23 @@ struct SplitSessionFormView: View {
                     .datePickerStyle(GraphicalDatePickerStyle())
             }
         }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(CardStyle.cardCornerRadius)
-        .shadow(color: Color.black.opacity(0.1), radius: CardStyle.cardShadowRadius, x: 0, y: 2)
     }
     
     private var expensesSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Text("Expenses")
-                    .font(.headline)
-                    .fontWeight(.semibold)
-                
-                Spacer()
-                
-                Button(action: {
-                    showingAddExpense = true
-                }) {
-                    Label("Add", systemImage: "plus.circle.fill")
-                        .font(.subheadline)
-                        .foregroundColor(.blue)
-                }
-            }
-            
+        Section {
             if viewModel.expenses.isEmpty {
-                ContentUnavailableView {
-                    Label("No expenses", systemImage: "dollarsign.circle")
-                } description: {
-                    Text("Tap 'Add' to add your first expense")
-                        .font(.caption)
+                HStack {
+                    Text("No expenses")
                         .foregroundColor(.secondary)
+                    Spacer()
+                    Button(action: {
+                        showingAddExpense = true
+                    }) {
+                        Label("Add", systemImage: "plus.circle.fill")
+                            .font(.subheadline)
+                            .foregroundColor(.blue)
+                    }
                 }
-                .frame(height: 80)
             } else {
                 ForEach(viewModel.expenses.indices, id: \.self) { index in
                     HStack(spacing: 12) {
@@ -155,22 +112,26 @@ struct SplitSessionFormView: View {
                                 .foregroundColor(.red)
                         }
                     }
-                    .padding(.vertical, 4)
+                }
+                
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        showingAddExpense = true
+                    }) {
+                        Label("Add Expense", systemImage: "plus.circle.fill")
+                            .font(.subheadline)
+                            .foregroundColor(.blue)
+                    }
                 }
             }
+        } header: {
+            Text("Expenses")
         }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(CardStyle.cardCornerRadius)
-        .shadow(color: Color.black.opacity(0.1), radius: CardStyle.cardShadowRadius, x: 0, y: 2)
     }
     
     private var participantsSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("Participants")
-                .font(.headline)
-                .fontWeight(.semibold)
-            
+        Section("Participants") {
             // Input mode picker
             Picker("Input Mode", selection: $viewModel.participantInputMode) {
                 ForEach(ParticipantInputMode.allCases, id: \.self) { mode in
@@ -187,121 +148,108 @@ struct SplitSessionFormView: View {
                 mixedModeContent
             }
         }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(CardStyle.cardCornerRadius)
-        .shadow(color: Color.black.opacity(0.1), radius: CardStyle.cardShadowRadius, x: 0, y: 2)
     }
     
     private var countModeContent: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        Group {
             Stepper("Number of participants: \(viewModel.participantCount)", value: Binding(
                 get: { viewModel.participantCount },
                 set: { viewModel.updateParticipantCount($0) }
             ), in: 1...50)
             
-            Text("Participants will be listed as Person 1, Person 2, etc.")
-                .font(.caption)
-                .foregroundColor(.secondary)
-            
-            Text("To add specific names, use 'Friends & Manual' mode instead.")
-                .font(.caption)
-                .foregroundColor(.blue)
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Participants will be listed as Person 1, Person 2, etc.")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                Text("To add specific names, use 'Friends & Manual' mode instead.")
+                    .font(.caption)
+                    .foregroundColor(.blue)
+            }
         }
     }
     
     private var mixedModeContent: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        Group {
             // Friends section
-            VStack(alignment: .leading, spacing: 12) {
-                HStack {
-                    Text("Friends (\(viewModel.selectedFriends.count))")
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.blue)
-                    
-                    Spacer()
-                    
-                    Button("Select Friends") {
-                        showingSelectFriends = true
-                    }
-                    .buttonStyle(.borderedProminent)
-                }
+            HStack {
+                Text("Friends (\(viewModel.selectedFriends.count))")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.blue)
                 
-                if viewModel.selectedFriends.isEmpty {
-                    Text("No friends selected")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                        .padding(.vertical, 4)
-                } else {
-                    ForEach(viewModel.selectedFriends, id: \.id) { friend in
-                        HStack {
-                            // Avatar
-                            ZStack {
-                                Circle()
-                                    .fill(Color.blue.opacity(0.2))
-                                    .frame(width: 30, height: 30)
-                                
-                                Text(String(friend.name.prefix(2).uppercased()))
-                                    .font(.caption)
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(.blue)
-                            }
+                Spacer()
+                
+                Button("Select Friends") {
+                    showingSelectFriends = true
+                }
+                .buttonStyle(.borderedProminent)
+            }
+            
+            if viewModel.selectedFriends.isEmpty {
+                Text("No friends selected")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            } else {
+                ForEach(viewModel.selectedFriends, id: \.id) { friend in
+                    HStack {
+                        // Avatar
+                        ZStack {
+                            Circle()
+                                .fill(Color.blue.opacity(0.2))
+                                .frame(width: 30, height: 30)
                             
-                            Text(friend.name)
-                                .font(.subheadline)
-                            
-                            Spacer()
-                            
-                            Button(action: {
-                                viewModel.removeFriend(friend)
-                            }) {
-                                Image(systemName: "minus.circle.fill")
-                                    .foregroundColor(.red)
-                            }
+                            Text(String(friend.name.prefix(2).uppercased()))
+                                .font(.caption)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.blue)
                         }
-                        .padding(.vertical, 2)
+                        
+                        Text(friend.name)
+                            .font(.subheadline)
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            viewModel.removeFriend(friend)
+                        }) {
+                            Image(systemName: "minus.circle.fill")
+                                .foregroundColor(.red)
+                        }
                     }
                 }
             }
             
-            Divider()
-            
             // Manual participants section
-            VStack(alignment: .leading, spacing: 12) {
-                HStack {
-                    Text("Manual Participants (\(viewModel.manualParticipants.count))")
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.green)
-                    
-                    Spacer()
-                    
-                    Button("Add Participant") {
-                        viewModel.addManualParticipant("Person \(viewModel.manualParticipants.count + 1)")
-                    }
-                    .buttonStyle(.borderedProminent)
-                }
+            HStack {
+                Text("Manual Participants (\(viewModel.manualParticipants.count))")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.green)
                 
-                if viewModel.manualParticipants.isEmpty {
-                    Text("No manual participants added")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                        .padding(.vertical, 4)
-                } else {
-                    ForEach(viewModel.manualParticipants.indices, id: \.self) { index in
-                        HStack {
-                            TextField("Name", text: $viewModel.manualParticipants[index])
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                            
-                            Button(action: {
-                                viewModel.removeManualParticipant(at: index)
-                            }) {
-                                Image(systemName: "minus.circle.fill")
-                                    .foregroundColor(.red)
-                            }
+                Spacer()
+                
+                Button("Add Participant") {
+                    viewModel.addManualParticipant("Person \(viewModel.manualParticipants.count + 1)")
+                }
+                .buttonStyle(.borderedProminent)
+            }
+            
+            if viewModel.manualParticipants.isEmpty {
+                Text("No manual participants added")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            } else {
+                ForEach(viewModel.manualParticipants.indices, id: \.self) { index in
+                    HStack {
+                        TextField("Name", text: $viewModel.manualParticipants[index])
+                        
+                        Button(action: {
+                            viewModel.removeManualParticipant(at: index)
+                        }) {
+                            Image(systemName: "minus.circle.fill")
+                                .foregroundColor(.red)
                         }
-                        .padding(.vertical, 2)
                     }
                 }
             }
@@ -318,8 +266,6 @@ struct SplitSessionFormView: View {
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
-                .padding(.top, 8)
-                .padding(.horizontal, 12)
                 .padding(.vertical, 8)
                 .background(Color(.systemGray6))
                 .cornerRadius(8)
@@ -328,29 +274,16 @@ struct SplitSessionFormView: View {
     }
     
     private var paymentDetailsSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Payment Details (Optional)")
-                .font(.headline)
-                .fontWeight(.semibold)
-            
+        Section("Payment Details (Optional)") {
             TextField("Account Number", text: $viewModel.paymentDetails.accountNumber)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
                 .keyboardType(.numberPad)
             
             TextField("Bank Name (e.g., BCA, BNI)", text: $viewModel.paymentDetails.bankName)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
             
             TextField("Account Name", text: $viewModel.paymentDetails.accountName)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-            
+        } footer: {
             Text("This information will be included in the summary for easy payment transfers.")
-                .font(.caption)
-                .foregroundColor(.secondary)
         }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(CardStyle.cardCornerRadius)
-        .shadow(color: Color.black.opacity(0.1), radius: CardStyle.cardShadowRadius, x: 0, y: 2)
     }
     
     private var calculationSection: some View {

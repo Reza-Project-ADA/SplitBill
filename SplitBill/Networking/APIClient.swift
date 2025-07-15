@@ -176,7 +176,7 @@ class APIClient {
                 var errorMessage = validationErrorResponse.message + "\n"
                 
                 // Add each field error
-                for (field, errors) in validationErrorResponse.errors {
+                for (_, errors) in validationErrorResponse.errors {
                     for error in errors {
                         errorMessage += "• \(error)\n"
                     }

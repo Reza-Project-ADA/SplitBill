@@ -120,7 +120,7 @@ struct ImportContactsSheet: View {
                     }
                 }
             }
-        @unknown default:
+        default:
             permissionDenied = true
         }
     }

@@ -312,6 +312,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = SplitBill;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This camera used for scan billing";
+				INFOPLIST_KEY_NSContactsUsageDescription = "Import friends from contact";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -348,6 +349,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = SplitBill;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This camera used for scan billing";
+				INFOPLIST_KEY_NSContactsUsageDescription = "Import friends from contact";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

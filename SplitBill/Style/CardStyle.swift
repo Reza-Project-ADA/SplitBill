@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct CardStyle {
-    static let cardBackgroundColor = Color(.systemGray6) // Adaptable for light/dark mode
+    static let cardBackgroundColor = Color(.systemBackground) // Adaptable for light/dark mode
     static let cardCornerRadius: CGFloat = 12
     static let cardShadowRadius: CGFloat = 5
 }

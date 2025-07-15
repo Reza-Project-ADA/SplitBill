@@ -26,7 +26,7 @@ struct SplitBillApp: App {
     var sharedModelContainer: ModelContainer = {
         let isPreview = ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
         let schema = Schema([
-            SDBillSplitRecord.self, SDParticipantShare.self, SDAssignedItemEntry.self
+            SDBillSplitRecord.self, SDParticipantShare.self, SDAssignedItemEntry.self, SDSplitSession.self, SDExpenseItem.self, SDFriend.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: isPreview)
 

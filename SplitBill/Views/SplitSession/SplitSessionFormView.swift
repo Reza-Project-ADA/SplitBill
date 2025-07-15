@@ -15,6 +15,7 @@ struct SplitSessionFormView: View {
     @State private var showingAddExpense = false
     @State private var showingSummary = false
     @State private var showingSelectFriends = false
+    @State private var savedSession: SDSplitSession?
     
     var body: some View {
         NavigationView {
@@ -50,6 +51,9 @@ struct SplitSessionFormView: View {
             }
             .sheet(isPresented: $showingSelectFriends) {
                 SelectFriendsSheet(viewModel: viewModel)
+            }
+            .sheet(item: $savedSession) { session in
+                SplitSessionDetailView(session: session)
             }
         }
     }
@@ -274,24 +278,23 @@ struct SplitSessionFormView: View {
     }
     
     private var paymentDetailsSection: some View {
-        Section("Payment Details (Optional)") {
+        Section {
             TextField("Account Number", text: $viewModel.paymentDetails.accountNumber)
                 .keyboardType(.numberPad)
             
             TextField("Bank Name (e.g., BCA, BNI)", text: $viewModel.paymentDetails.bankName)
             
             TextField("Account Name", text: $viewModel.paymentDetails.accountName)
-        } footer: {
+        } header: {
+            Text("Payment Details (Optional)")
+        }
+        footer: {
             Text("This information will be included in the summary for easy payment transfers.")
         }
     }
     
     private var calculationSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Calculation")
-                .font(.headline)
-                .fontWeight(.semibold)
-            
+        Section("Calculation") {
             HStack {
                 Text("Total Cost:")
                     .fontWeight(.medium)
@@ -329,81 +332,17 @@ struct SplitSessionFormView: View {
                 }
             }
         }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(CardStyle.cardCornerRadius)
-        .shadow(color: Color.black.opacity(0.1), radius: CardStyle.cardShadowRadius, x: 0, y: 2)
     }
     
     private var actionsSection: some View {
-        VStack(spacing: 12) {
-            Button(action: {
-                generateAndSaveSession()
-            }) {
-                Label("Save Session", systemImage: "checkmark.circle.fill")
-                    .font(.headline)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue)
-                    .cornerRadius(CardStyle.cardCornerRadius)
-            }
-            .disabled(viewModel.expenses.isEmpty || viewModel.sessionTitle.isEmpty || viewModel.actualParticipantCount == 0)
-            
-            Button(action: {
+        Section {
+            Button("Reset Session") {
                 viewModel.resetSession()
-            }) {
-                Label("Reset Session", systemImage: "arrow.counterclockwise")
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-                    .foregroundColor(.red)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.white)
-                    .cornerRadius(CardStyle.cardCornerRadius)
             }
-        }
-    }
-    
-    private func generateAndSaveSession() {
-        let sdExpenses = viewModel.expenses.map { expense in
-            SDExpenseItem(itemDescription: expense.description, amount: expense.amount)
-        }
-        
-        let participantNames: [String] = {
-            switch viewModel.participantInputMode {
-            case .count:
-                return []
-            case .mixed:
-                return viewModel.selectedFriends.map { $0.name } + viewModel.manualParticipants
-            }
-        }()
-        
-        let generatedSummary = viewModel.generateSummary()
-        
-        let session = SDSplitSession(
-            sessionTitle: viewModel.sessionTitle,
-            sessionCategory: viewModel.sessionCategory,
-            participantCount: viewModel.actualParticipantCount,
-            participantNames: participantNames,
-            totalCost: viewModel.totalCost,
-            roundedSharePerPerson: viewModel.roundedSharePerPerson,
-            totalOverage: viewModel.totalOverage,
-            expenses: sdExpenses,
-            paymentAccountNumber: viewModel.paymentDetails.accountNumber,
-            paymentBankName: viewModel.paymentDetails.bankName,
-            paymentAccountName: viewModel.paymentDetails.accountName,
-            generatedSummary: generatedSummary
-        )
-        
-        modelContext.insert(session)
-        
-        do {
-            try modelContext.save()
-            showingSummary = true
-        } catch {
-            print("Failed to save session: \(error)")
+            .foregroundColor(.red)
+            .font(.subheadline)
+            .fontWeight(.medium)
+            .foregroundColor(.red)
         }
     }
     

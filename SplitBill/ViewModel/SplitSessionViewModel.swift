@@ -94,19 +94,17 @@ class SplitSessionViewModel: ObservableObject {
         var summary = "Session \(formatter.string(from: dateToUse))\n\n"
         
         // Participants list
-        var allParticipants: [String] = []
         switch participantInputMode {
         case .count:
-            allParticipants = (1...actualParticipantCount).map { "Person \($0)" }
+            // Show participant count for count only mode
+            summary += "\(actualParticipantCount) People\n\n"
         case .mixed:
-            allParticipants = selectedFriends.map { $0.name } + manualParticipants
+            let allParticipants = selectedFriends.map { $0.name } + manualParticipants
+            for participant in allParticipants {
+                summary += "\(participant)\n"
+            }
+            summary += "\n"
         }
-        
-        for participant in allParticipants {
-            summary += "\(participant)\n"
-        }
-        
-        summary += "\n"
         
         // Expenses in single line format
         let expenseDescriptions = expenses.map { "\($0.description) \($0.amount.currency)" }

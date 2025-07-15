@@ -269,19 +269,17 @@ struct SplitSessionDetailView: View {
         
         var summary = "Session \(formatter.string(from: session.createdAt))\n\n"
         
-        // Participants list - simple vertical list
+        // Participants list
         if !session.participantNames.isEmpty {
+            // Mixed mode - show individual names
             for name in session.participantNames {
                 summary += "\(name)\n"
             }
+            summary += "\n"
         } else {
-            // If no participant names, show generic participants
-            for i in 1...session.participantCount {
-                summary += "Person \(i)\n"
-            }
+            // Count only mode - show participant count
+            summary += "\(session.participantCount) People\n\n"
         }
-        
-        summary += "\n"
         
         // Expenses in single line format
         let expenseDescriptions = session.expenses.map { "\($0.itemDescription) \($0.amount.currency)" }

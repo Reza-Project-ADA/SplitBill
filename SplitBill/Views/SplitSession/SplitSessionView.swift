@@ -68,7 +68,7 @@ struct SplitSessionView: View {
     
     var emptyStateView: some View {
         ContentUnavailableView {
-            Label("No Split Sessions", systemImage: "person.2.circle")
+            Label("No Split Sessions", systemImage: "arrow.left.arrow.right")
         } description: {
             Text("Your split sessions will appear here.\nTap the '+' button to create your first session!")
                 .multilineTextAlignment(.center)

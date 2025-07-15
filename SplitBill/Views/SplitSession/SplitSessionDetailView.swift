@@ -83,7 +83,7 @@ struct SplitSessionDetailView: View {
             .foregroundColor(.secondary)
         }
         .padding()
-        .background(Color.white)
+        .background(Color(.systemBackground))
         .cornerRadius(CardStyle.cardCornerRadius)
         .shadow(color: Color.black.opacity(0.1), radius: CardStyle.cardShadowRadius, x: 0, y: 2)
     }
@@ -117,7 +117,7 @@ struct SplitSessionDetailView: View {
             }
         }
         .padding()
-        .background(Color.white)
+        .background(Color(.systemBackground))
         .cornerRadius(CardStyle.cardCornerRadius)
         .shadow(color: Color.black.opacity(0.1), radius: CardStyle.cardShadowRadius, x: 0, y: 2)
     }
@@ -186,7 +186,7 @@ struct SplitSessionDetailView: View {
             }
         }
         .padding()
-        .background(Color.white)
+        .background(Color(.systemBackground))
         .cornerRadius(CardStyle.cardCornerRadius)
         .shadow(color: Color.black.opacity(0.1), radius: CardStyle.cardShadowRadius, x: 0, y: 2)
     }
@@ -228,7 +228,7 @@ struct SplitSessionDetailView: View {
             }
         }
         .padding()
-        .background(Color.white)
+        .background(Color(.systemBackground))
         .cornerRadius(CardStyle.cardCornerRadius)
         .shadow(color: Color.black.opacity(0.1), radius: CardStyle.cardShadowRadius, x: 0, y: 2)
     }
@@ -258,7 +258,7 @@ struct SplitSessionDetailView: View {
             }
         }
         .padding()
-        .background(Color.white)
+        .background(Color(.systemBackground))
         .cornerRadius(CardStyle.cardCornerRadius)
         .shadow(color: Color.black.opacity(0.1), radius: CardStyle.cardShadowRadius, x: 0, y: 2)
     }

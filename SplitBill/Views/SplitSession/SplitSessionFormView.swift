@@ -187,7 +187,12 @@ struct SplitSessionFormView: View {
                 Button("Select Friends") {
                     showingSelectFriends = true
                 }
-                .buttonStyle(.borderedProminent)
+                .font(.subheadline)
+                .foregroundColor(.white)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(Color.blue)
+                .cornerRadius(8)
             }
             
             if viewModel.selectedFriends.isEmpty {
@@ -236,7 +241,12 @@ struct SplitSessionFormView: View {
                 Button("Add Participant") {
                     viewModel.addManualParticipant("Person \(viewModel.manualParticipants.count + 1)")
                 }
-                .buttonStyle(.borderedProminent)
+                .font(.subheadline)
+                .foregroundColor(.white)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(Color.green)
+                .cornerRadius(8)
             }
             
             if viewModel.manualParticipants.isEmpty {
